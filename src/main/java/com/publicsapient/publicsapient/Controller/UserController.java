@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/api")
+// @RequestMapping("/api")
 public class UserController {
     
     @Autowired
@@ -34,25 +34,26 @@ public class UserController {
         return "Data loaded in db successfull";
     }
     
-
-    @GetMapping("/user/{keyword}")
-    public List<APIUser> getAllUsers(@PathVariable String keyword) {
-        List<APIUser> allUsers=userServiceImpl.getAllUsers(keyword);
-        return allUsers;
-    }
-
     @GetMapping("/user/id/{id}")
     public APIUser getUserById(@PathVariable Long id) {
-        APIUser user=userServiceImpl.getUserById(id);
+        APIUser user=userServiceImpl.findUserById(id);
         return user;
     }
+    
+    // @GetMapping("/user")
+    // public List<APIUser> getAllUsers() {
+    //     List<APIUser> users=userServiceImpl.getAllUsers();
+        
+    //     return users;
+    // }
     
     @GetMapping("/user/email/{email}")
     public APIUser getUserByEmail(@PathVariable String email) {
-        APIUser user=userServiceImpl.getUserByEmail(email);
+        APIUser user=userServiceImpl.findUserByEmail(email);
         return user;
     }
     
-    
+
+        
     
 }

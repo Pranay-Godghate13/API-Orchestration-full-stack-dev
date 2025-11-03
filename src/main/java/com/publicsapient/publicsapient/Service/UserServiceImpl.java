@@ -12,8 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.publicsapient.publicsapient.Model.APIUser;
-import com.publicsapient.publicsapient.Payload.APIUserDTO;
-import com.publicsapient.publicsapient.Payload.ResponseDTO;
+
 import com.publicsapient.publicsapient.Repository.UserRepository;
 
 
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
         List<Map<String, Object>> users = (List<Map<String, Object>>) response.getBody().get("users");
         List<APIUser> userList=users.stream().map(data->{
             APIUser user=new APIUser();
-            user.setId(Long.valueOf(data.get("id").toString()));
+            // user.setId(Long.valueOf(data.get("id").toString()));
             user.setFirstName(data.get("firstName").toString());
             user.setLastName(data.get("lastName").toString());
             user.setEmail(data.get("email").toString());
@@ -47,25 +46,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<APIUser> getAllUsers(String keyword) {
-        List<APIUser> users=userRepository.findAll();
-        return users;
-    }
-
-    @Override
-    public APIUser getUserById(Long id) {
+    public APIUser findUserById(Long id) {
         APIUser user=userRepository.findById(id)
-                    .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+                        .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
         return user;
-
     }
 
     @Override
-    public APIUser getUserByEmail(String email) {
+    public APIUser findUserByEmail(String email) {
+        // List<APIUser> users=userRepository.findAll();
+        // for(APIUser user:users)
+        // {
+        //     if(user.getEmail().equals(email))
+        //     return user;
+        // }
+        // throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         APIUser user=userRepository.findByEmail(email);
         if(user==null)
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return user;
+        
+    }
+
+    // @Override
+    // public List<APIUser> getAllUsers() {
+    //     List<APIUser> users=userRepository.findAll();
+    //     return users;
+    // }
+
     
-}
 }

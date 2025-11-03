@@ -7,7 +7,8 @@ import com.publicsapient.publicsapient.Model.APIUser;
 
 public interface UserService {
     String loadData();
-    List<APIUser> getAllUsers(String keyword);
-    APIUser getUserById(Long id);
-    APIUser getUserByEmail(String email);
+    APIUser findUserById(Long id);
+    // List<APIUser> getAllUsers();
+    APIUser findUserByEmail(String email);
+    
 }
