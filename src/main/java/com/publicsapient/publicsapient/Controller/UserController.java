@@ -5,7 +5,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.publicsapient.publicsapient.Model.APIUser;
-
+import com.publicsapient.publicsapient.Payload.APIUserDTO;
+import com.publicsapient.publicsapient.Payload.ResponseDTO;
 import com.publicsapient.publicsapient.Service.UserServiceImpl;
 
 import java.util.List;
@@ -56,11 +57,11 @@ public class UserController {
     
     
     @GetMapping("/user/id/{id}")
-    public ResponseEntity<APIUser> getUserById(@PathVariable Long id) {
+    public ResponseEntity<APIUserDTO> getUserById(@PathVariable Long id) {
         try
         {
-            APIUser user=userServiceImpl.findUserById(id);
-            return new ResponseEntity<APIUser>(user, HttpStatus.FOUND);
+            APIUserDTO user=userServiceImpl.findUserById(id);
+            return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
         }
         catch(ResponseStatusException e)
         {
@@ -77,11 +78,11 @@ public class UserController {
     // }
     
     @GetMapping("/user/email/{email}")
-    public ResponseEntity<APIUser> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<APIUserDTO> getUserByEmail(@PathVariable String email) {
         try
         {
-            APIUser user=userServiceImpl.findUserByEmail(email);
-            return new ResponseEntity<APIUser>(user, HttpStatus.FOUND);
+            APIUserDTO user=userServiceImpl.findUserByEmail(email);
+            return new ResponseEntity<APIUserDTO>(user, HttpStatus.FOUND);
         }
         catch(ResponseStatusException e)
         {
@@ -92,11 +93,11 @@ public class UserController {
     
 
     @GetMapping("/user/keyword/{keyword}")
-    public ResponseEntity<List<APIUser>> getUsersByKeyword(@PathVariable String keyword) {
+    public ResponseEntity<ResponseDTO> getUsersByKeyword(@PathVariable String keyword) {
         try
         {
-            List<APIUser> users=userServiceImpl.findByKeyword(keyword);
-            return new ResponseEntity<List<APIUser>>(users, HttpStatus.FOUND);
+            ResponseDTO users=userServiceImpl.findByKeyword(keyword);
+            return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
         }
         catch(ResponseStatusException e)
         {

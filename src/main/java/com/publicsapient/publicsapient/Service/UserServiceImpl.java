@@ -4,8 +4,7 @@ package com.publicsapient.publicsapient.Service;
 import java.util.List;
 import java.util.Map;
 
-
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.publicsapient.publicsapient.Model.APIUser;
-
+import com.publicsapient.publicsapient.Payload.APIUserDTO;
+import com.publicsapient.publicsapient.Payload.ResponseDTO;
 import com.publicsapient.publicsapient.Repository.UserRepository;
 
 
@@ -27,6 +27,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public String loadData() {
@@ -56,27 +58,35 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public APIUser findUserById(Long id) {
-        APIUser user=userRepository.findById(id)
+    public APIUserDTO findUserById(Long id) {
+
+        APIUser userFromDb=userRepository.findById(id)
                         .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user id "+id+" not present"));
-        return user;
+        APIUserDTO userDTO=modelMapper.map(userFromDb,APIUserDTO.class);
+        return userDTO;
     }
 
     @Override
-    public APIUser findUserByEmail(String email) {
-        APIUser user=userRepository.findByEmail(email);
-        if(user==null)
+    public APIUserDTO findUserByEmail(String email) {
+        APIUser userFromDb=userRepository.findByEmail(email);
+        if(userFromDb==null)
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email "+email+" not present");
-        return user;
+        APIUserDTO userDTO=modelMapper.map(userFromDb, APIUserDTO.class);
+        return userDTO;
         
     }
 
     @Override
-    public List<APIUser> findByKeyword(String keyword) {
-        List<APIUser> users=userRepository.findByKeyword(keyword);
-        if(users==null || users.isEmpty())
+    public ResponseDTO findByKeyword(String keyword) {
+        List<APIUser> usersFromDb=userRepository.findByKeyword(keyword);
+        if(usersFromDb==null || usersFromDb.isEmpty())
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with user keyword "+keyword+" not present");
-        return users;
+        List<APIUserDTO> userDTO=usersFromDb.stream()
+                            .map(m->modelMapper.map(m, APIUserDTO.class))
+                            .toList();
+        ResponseDTO responseDTO=new ResponseDTO();
+        responseDTO.setContent(userDTO);
+        return responseDTO;
     }
     
 }
