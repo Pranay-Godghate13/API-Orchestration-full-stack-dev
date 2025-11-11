@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.websocket.server.PathParam;
 
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class UserController {
     
     @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/user/keyword")
-    public ResponseEntity<ResponseDTO> getUsersByKeyword(@RequestParam String keyword) {
+    public ResponseEntity<ResponseDTO> getUsersByKeyword(@RequestParam @NotBlank(message = "Enter the keyword") @Size(min = 3,message = "Must be >3 characters") String keyword) {
         
             ResponseDTO users=userServiceImpl.findByKeyword(keyword);
             return new ResponseEntity<ResponseDTO>(users, HttpStatus.FOUND);
