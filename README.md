@@ -63,11 +63,10 @@ Before you begin, ensure you have the following installed:
 
 The backend provides RESTful APIs. Here are some example endpoints:
 
-*   **GET /users:** Retrieves all users.
+*   **POST /users/loadData:** Load data in database.
 *   **GET /users/{id}:** Retrieves a specific user by ID.
-*   **POST /users:** Creates a new user.
-*   **PUT /users/{id}:** Updates an existing user.
-*   **DELETE /users/{id}:** Deletes a user.
+*   **GET /users/{email}:** Retrieves a specific user by email.
+*   **GET /users/{keyword}:** Retrieves a specific user by keyword.
 
 **Swagger Documentation:**
 
@@ -111,3 +110,4 @@ This project does not currently have a specified license. All rights are reserve
 ## Acknowledgments
 
 *   This project utilizes the Spring Boot framework, React library, and other open-source technologies. We appreciate the contributions of the developers of these technologies.
+
